@@ -1,0 +1,517 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Spec Rapor",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api"
+    }
+  ],
+  "paths": {
+    "/user/auth": {
+      "post": {
+        "summary": "authenticating user",
+        "tags": ["Auth Endpoints"],
+        "requestBody": {
+          "description": "data for authenticate user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "integer",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiIyMDQwMTA0MTcwNjUiLCJyZWxhc2kiOiIyMDQwMTA0MTcwNjUiLCJpYXQiOjE2NDY3MjE0ODAsImV4cCI6MTY0NjgwNzg4MH0.0dKjwphIYee_itQ9BJFJt1MyEvdsRa0iF2_JmUtKgPA"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "get all users"
+          }
+        }
+      }
+    },
+    "/user/credential": {
+      "get": {
+        "summary": "getting user authenticated data",
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Auth Endpoints"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "endpoint for check user is authenticate or not"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "getting all users",
+        "security": [{
+            "UserAuth": []
+          }],
+        "parameters": [
+          {
+            "name": "total",
+            "in": "query",
+            "description": "count data to load"
+          }
+        ],
+        "tags": [
+          "User Endpoints"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "integer",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "get all users"
+          }
+        }
+      },
+      "post": {
+        "summary": "creating new user",
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["User Endpoints"],
+        "requestBody": {
+          "description": "data save to the recource",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "integer",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "get all users"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "getting user update data",
+        "security": [{
+          "UserAuth": []
+        }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Indentifier user"
+          }
+        ],
+        "tags": ["User Endpoints"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "deleting uer from recource",
+        "security": [{
+          "UserAuth": []
+        }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Indentifier user"
+          }
+        ],
+        "tags": ["User Endpoints"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses delete data"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": "endpoint for deleting data user"
+          }
+        }
+      }
+    },
+    "/mapel": {
+      "get": {
+        "summary": "List all mapel",
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": [
+          "Mapel Endpoints"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "integer",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/mapel"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "response of standard api and list all users"
+          }
+        }
+      },
+      "post": {
+        "summary": "creating new mapel",
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Mapel Endpoints"],
+        "requestBody": {
+          "description": "data save to the recource",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/mapel_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "integer",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/mapel"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "get all users"
+          }
+        }
+      }
+    },
+    "/mapel/{id}": {
+      "get": {
+        "summary": "getting mapel update data",
+        "security": [{
+          "UserAuth": []
+        }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Kode Mapel"
+          }
+        ],
+        "tags": ["Mapel Endpoints"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/mapel"
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "deleting mapel from recource",
+        "security": [{
+          "UserAuth": []
+        }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Kode Mapel"
+          }
+        ],
+        "tags": ["Mapel Endpoints"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses delete data"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": "endpoint for deleting data user"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Authenticate user rules"
+      }
+    },
+    "schemas": {
+      "user_request": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "required": true
+          },
+          "role": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "auth_request": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "0128988192"
+          },
+          "relasi": {
+            "type": "string",
+            "example": "0128988192"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          }
+        }
+      },
+      "mapel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "kode": {
+            "type": "string"
+          },
+          "nama": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "mapel_request": {
+        "type": "object",
+        "properties": {
+          "nama_mapel": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
